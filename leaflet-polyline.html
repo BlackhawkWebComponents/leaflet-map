@@ -43,10 +43,21 @@ add `leaflet-point` elements inside it.
      feature: null,
 
      containerChanged: function() {
+       console.log('containerChanged');
        if ( this.container ) {
+         console.log('this.container is not null');
          this.feature = L.polyline([], this.getOptions());
          this.feature.addTo( this.container );
-         this.contentChanged();
+
+         this.points = Array.prototype.slice.call( this.$.points.getDistributedNodes() );
+         this.points.forEach( function ( p ) {
+           var latlng = L.latLng(
+                   p.getAttribute( 'latitude' ),
+                   p.getAttribute( 'longitude' )
+           );
+           this.feature.addLatLng( latlng );
+         }.bind( this ) );
+         this.onMutation(this, this.childrenUpdated);
 
          // forward events
          this.feature.on('click dblclick mousedown mouseover mouseout contextmenu add remove popupopen popupclose', function(e) {
@@ -55,19 +66,17 @@ add `leaflet-point` elements inside it.
        }
      },
 
-     contentChanged: function () {
-       this.points = Array.prototype.slice.call( this.$.points.getDistributedNodes() );
-       this.onMutation( this, this.contentChanged );
-
-       this.points.forEach( function ( p ) {
+     childrenUpdated: function(observer, mutations) {
+       this.onMutation(this, this.childrenUpdated);
+       mutations.forEach(function(record) {
+         var p = record.addedNodes[1];
          var latlng = L.latLng(
-           p.getAttribute( 'latitude' ),
-           p.getAttribute( 'longitude' )
+                 p.getAttribute( 'latitude' ),
+                 p.getAttribute( 'longitude' )
          );
          this.feature.addLatLng( latlng );
-       }.bind( this ) );
+       }.bind(this));
      },
-     
      detached: function() {
        if (this.container && this.feature) {
          this.container.removeLayer(this.feature);
