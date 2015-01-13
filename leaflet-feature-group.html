@@ -1,0 +1,182 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="leaflet-import.html">
+
+<!--
+A Feature group (<a href="http://leafletjs.com/reference.html#featuregroup">Leaflet Reference</a>).
+
+##### Example
+
+	<leaflet-map longitude="77.6" latitude="12.95" zoom="12">
+		<leaflet-feature-group>
+			<leaflet-marker latitude="77.65" longitude="12.98"> </leaflet-marker>
+
+			<leaflet-polygon color="#f00">
+				<leaflet-point longitude="77.5700" latitude="12.9700"></leaflet-point>
+				<leaflet-point longitude="77.6034" latitude="13.0001"></leaflet-point>
+				<leaflet-point longitude="77.6006" latitude="12.9547"></leaflet-point>
+			</leaflet-polygon>
+
+			<leaflet-circle longitude="77.58" latitude="12.9300"
+				radius="2000" color="#0a0" fillColor="#aa0" fillopacity="0.5" fill="true">
+			</leaflet-circle>
+
+			<leaflet-polyline>
+				<leaflet-point longitude="77.6400" latitude="12.9100"></leaflet-point>
+				<leaflet-point longitude="77.6229" latitude="12.9259"></leaflet-point>
+				<leaflet-point longitude="77.6499" latitude="12.9699"></leaflet-point>
+				<leaflet-point longitude="77.6119" latitude="12.9738"></leaflet-point>
+			</leaflet-polyline>
+
+			<leaflet-circle longitude="77.64" latitude="12.9300"
+				radius="500" color="#077">
+			</leaflet-circle>
+
+			<div popup>Hello World</div>
+		</leaflet-feature-group>
+	</leaflet-map>
+
+
+
+
+@element leaflet-feature-group
+@blurb an element which represents a feature group
+@status beta
+@homepage https://nhnb.github.io/leaflet-map/
+-->
+
+<polymer-element name="leaflet-feature-group" extends="leaflet-layer-group">
+	<template>
+		<div hidden>
+			<content id="popupContent" select="[popup]"></content>
+		</div>
+	</template>
+	<script>
+	"use strict";
+
+	/**
+	 * Fired when the user clicks (or taps) the marker.
+	 *
+	 * @event click
+	 * @type MouseEvent
+	 * @param {LatLng} latlng The geographical point where the mouse event occured.
+	 * @param {Point} layerPoint Pixel coordinates of the point where the mouse event occured relative to the map layer.
+	 * @param {Point} containerPoint Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+	 * @param {DOMMouseEvent} originalEvent The original DOM mouse event fired by the browser.
+	 */
+
+	/**
+	 * Fired when the user double-clicks (or double-taps) the marker.
+	 *
+	 * @event dblclick
+	 * @type MouseEvent
+	 * @param {LatLng} latlng The geographical point where the mouse event occured.
+	 * @param {Point} layerPoint Pixel coordinates of the point where the mouse event occured relative to the map layer.
+	 * @param {Point} containerPoint Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+	 * @param {DOMMouseEvent} originalEvent The original DOM mouse event fired by the browser.
+	 */
+
+	/**
+	 * Fired when the user pushes the mouse button on the marker.
+	 *
+	 * @event mousedown
+	 * @type MouseEvent
+	 * @param {LatLng} latlng The geographical point where the mouse event occured.
+	 * @param {Point} layerPoint Pixel coordinates of the point where the mouse event occured relative to the map layer.
+	 * @param {Point} containerPoint Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+	 * @param {DOMMouseEvent} originalEvent The original DOM mouse event fired by the browser.
+	 */
+
+	/**
+	 * Fired when the mouse enters the marker.
+	 *
+	 * @event mouseover
+	 * @type MouseEvent
+	 * @param {LatLng} latlng The geographical point where the mouse event occured.
+	 * @param {Point} layerPoint Pixel coordinates of the point where the mouse event occured relative to the map layer.
+	 * @param {Point} containerPoint Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+	 * @param {DOMMouseEvent} originalEvent The original DOM mouse event fired by the browser.
+	 */
+
+	/**
+	 * Fired when the mouse leaves the marker.
+	 *
+	 * @event mouseout
+	 * @type MouseEvent
+	 * @param {LatLng} latlng The geographical point where the mouse event occured.
+	 * @param {Point} layerPoint Pixel coordinates of the point where the mouse event occured relative to the map layer.
+	 * @param {Point} containerPoint Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+	 * @param {DOMMouseEvent} originalEvent The original DOM mouse event fired by the browser.
+	 */
+
+	/**
+	 * Fired when the user right-clicks on the marker.
+	 *
+	 * @event contextmenu
+	 * @type MouseEvent
+	 * @param {LatLng} latlng The geographical point where the mouse event occured.
+	 * @param {Point} layerPoint Pixel coordinates of the point where the mouse event occured relative to the map layer.
+	 * @param {Point} containerPoint Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+	 * @param {DOMMouseEvent} originalEvent The original DOM mouse event fired by the browser.
+	 */
+
+	/**
+	 * Fired when a layer is added to the group.
+	 *
+	 * @event layeradd
+	 * @type LayerEvent
+	 * @param {ILayer} layer The layer that was added or removed.
+	 */
+
+	/**
+	 * Fired when a layer is removed from the map.
+	 *
+	 * @event layerremove
+	 * @type LayerEvent
+	 * @param {ILayer} layer The layer that was added or removed.
+	 */
+
+	Polymer({
+		containerChanged: function() {
+			if (this.container) {
+				var feature = L.featureGroup()
+				this.feature = feature;
+				this.feature.addTo(this.container);
+				this.contentChanged();
+
+				// forward events
+				this.feature.on('click dblclick mousedown mouseover mouseout contextmenu layeradd layerremove', function(e) {
+					this.fire(e.type, e);
+				}, this);
+			}
+		},
+
+		contentChanged: function () {
+			this.popupElement = null;
+
+			for (var i = 0, el; el = this.$.popupContent.getDistributedNodes()[i]; ++i) {
+				if (el.hasAttribute && el.hasAttribute('popup')) {
+					this.popupElement = el;
+					break;
+				}
+			}
+
+			for (var i = 0; i < this.children.length; i++) {
+				this.children[i].container = this.feature;
+			}
+			this.onMutation(this, this.contentChanged);
+			this.feature.unbindPopup();
+			var content = this.popupElement.innerHTML;
+			if (content.trim()) {
+				this.feature.bindPopup(content);
+			}
+		},
+
+		
+		detached: function() {
+			if (this.container && this.feature) {
+				this.container.removeLayer(this.feature);
+			}
+		}
+	});
+	</script>
+</polymer-element>

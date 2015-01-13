@@ -2,7 +2,7 @@
 	<head>
 		 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>leaflet-map web-component demo</title>
-		<script src="../platform/platform.js"></script>
+		<script src="../webcomponentsjs/webcomponents.js"></script>
 		<link rel="import" href="leaflet-map.html">
 		<link rel="import" href="demo-header.html">
 
@@ -304,10 +304,76 @@ document.addEventListener("load", function() {
 
 
 
+	<h2 id="featureGroup">Feature Group</h2>
+
+	<p>Circles, polylines and polygons and markers grouped together in feature group with shared popup.</p>
+
+	<leaflet-map longitude="77.6" latitude="12.95" zoom="12">
+		<leaflet-feature-group>
+			<leaflet-marker longitude="77.6" latitude="12.95"></leaflet-marker>
+
+			<leaflet-polygon color="#f00">
+				<leaflet-point longitude="77.5700" latitude="12.9700"></leaflet-point>
+				<leaflet-point longitude="77.6034" latitude="13.0001"></leaflet-point>
+				<leaflet-point longitude="77.6006" latitude="12.9547"></leaflet-point>
+			</leaflet-polygon>
+
+			<leaflet-circle longitude="77.58" latitude="12.9300"
+							radius="2000" color="#0a0" fillColor="#aa0" fillopacity="0.5" fill="true">
+			</leaflet-circle>
+
+			<leaflet-polyline>
+				<leaflet-point longitude="77.6400" latitude="12.9100"></leaflet-point>
+				<leaflet-point longitude="77.6229" latitude="12.9259"></leaflet-point>
+				<leaflet-point longitude="77.6499" latitude="12.9699"></leaflet-point>
+				<leaflet-point longitude="77.6119" latitude="12.9738"></leaflet-point>
+			</leaflet-polyline>
+
+			<leaflet-circle longitude="77.64" latitude="12.9300"
+							radius="500" color="#077">
+			</leaflet-circle>
+
+			<div popup>Hello World</div>
+		</leaflet-feature-group>
+	</leaflet-map>
+
+
+<pre class="html"><code>
+
+&lt;<span class="i">leaflet-map</span> <span class="a">latitude</span>="<span class="v">77.6</span>" <span class="a">longitude</span>="<span class="v">12.95</span>" <span class="a">zoom</span>="<span class="v">12</span>"&gt;
+  &lt;<span class="i">leaflet-feature-group</span>&gt;
+	&lt;<span class="i">leaflet-marker</span> <span class="a">longitude</span>="<span class="v">77.6</span>" <span class="a">latitude</span>="<span class="v">12.95</span>"&gt; &lt;/<span class="i">leaflet-marker</span>&gt;
+
+    &lt;<span class="i">leaflet-polygon</span> <span class="a">color</span>="<span class="v">#f00</span>"&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.5700</span>" <span class="a">longitude</span>="<span class="v">12.9700</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6034</span>" <span class="a">longitude</span>="<span class="v">13.0001</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6006</span>" <span class="a">longitude</span>="<span class="v">12.9547</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+    &lt;/<span class="i">leaflet-polygon</span>&gt;
+
+    &lt;<span class="i">leaflet-circle</span> <span class="a">latitude</span>="<span class="v">77.58</span>" <span class="a">longitude</span>="<span class="v">12.93</span>"
+      <span class="a">radius</span>="<span class="v">2000</span>" <span class="a">color</span>="<span class="v">#0a0</span>" <span class="a">fillColor</span>="<span class="v">#aa0</span>" <span class="a">fillOpacity</span>="<span class="v">0.5</span>" <span class="a">fill</span>="<span class="v">true</span>"
+    &lt;/<span class="i">leaflet-circle</span>&gt;
+
+    &lt;<span class="i">leaflet-polyline</span>&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6400</span>" <span class="a">longitude</span>="<span class="v">12.9100</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6229</span>" <span class="a">longitude</span>="<span class="v">12.9259</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6499</span>" <span class="a">longitude</span>="<span class="v">12.9699</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+      &lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6119</span>" <span class="a">longitude</span>="<span class="v">12.9738</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
+    &lt;/<span class="i">leaflet-polyline</span>&gt;
+
+    &lt;<span class="i">leaflet-circle</span> <span class="a">latitude</span>="<span class="v">77.64</span>" <span class="a">longitude</span>="<span class="v">12.93</span>"
+      <span class="a">radius</span>="<span class="v">500</span>" <span class="a">color</span>="<span class="v">#0a0</span>" <span class="a">fillColor</span>="<span class="v">#077</span>"&gt;
+    &lt;/<span class="i">leaflet-circle</span>&gt;
+  &lt;/<span class="i">leaflet-feature-group</span>&gt;
+&lt;/<span class="i">leaflet-map</span>&gt;
+
+
+</code></pre>
 
 
 
-<h2 id="tilelayer">Tile layer</h2>
+
+	<h2 id="tilelayer">Tile layer</h2>
 
 <p>Custom tile layers, for example from online games can be defined using the leaflet-tilelayer element. If there is no explicit tilelayer defined, a default one will be used as shown in previous examples.</p>
 
