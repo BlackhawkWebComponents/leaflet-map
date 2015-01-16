@@ -309,6 +309,11 @@ document.addEventListener("load", function() {
 	<p>Circles, polylines and polygons and markers grouped together in feature group with shared popup.</p>
 
 	<leaflet-map longitude="77.6" latitude="12.95" zoom="12">
+		<leaflet-tilelayer
+				url="http://{s}.tiles.mapbox.com/v3/rbeers.j1mhej3b/{z}/{x}/{y}.png"
+				minZoom="2" maxZoom="6" noWrap>
+			Map source: <a href="http://www.mapbox.com/about/maps/">Terms &amp; Feedback</a>
+		</leaflet-tilelayer>
 		<leaflet-feature-group>
 			<leaflet-marker longitude="77.6" latitude="12.95"></leaflet-marker>
 
@@ -377,39 +382,44 @@ document.addEventListener("load", function() {
 
 	<template id="geojson-template" is="auto-binding">
 		<leaflet-map longitude="-104.989" latitude="39.746" zoom="13">
-			<leaflet-geojson data="{{data}}"></leaflet-geojson>
+			<leaflet-tilelayer
+					url="http://{s}.tiles.mapbox.com/v3/rbeers.j1mhej3b/{z}/{x}/{y}.png"
+					minZoom="2" maxZoom="6" noWrap>
+				Map source: <a href="http://www.mapbox.com/about/maps/">Terms &amp; Feedback</a>
+			</leaflet-tilelayer>
+			<leaflet-geojson geojson="{{data}}"></leaflet-geojson>
 		</leaflet-map>
 	</template>
 
+	<script>
+		var t = document.querySelector('#geojson-template');
 
+		t.data = {
+			"type": "FeatureCollection",
+			"features": [
+				{
+					"type": "Feature",
+					"properties": {
+						"popupContent": "18th & California Light Rail Stop"
+					},
+					"geometry": {
+						"type": "Point",
+						"coordinates": [-104.989, 39.746]
+					}
+				},{
+					"type": "Feature",
+					"properties": {
+						"popupContent": "20th & Welton Light Rail Stop"
+					},
+					"geometry": {
+						"type": "Point",
+						"coordinates": [-104.986, 39.747]
+					}
+				}
+			]
+		};
+	</script>
 <pre class="html"><code>
-
-	&lt;<span class="i">leaflet-map</span> <span class="a">latitude</span>="<span class="v">77.6</span>" <span class="a">longitude</span>="<span class="v">12.95</span>" <span class="a">zoom</span>="<span class="v">12</span>"&gt;
-	&lt;<span class="i">leaflet-feature-group</span>&gt;
-	&lt;<span class="i">leaflet-marker</span> <span class="a">longitude</span>="<span class="v">77.6</span>" <span class="a">latitude</span>="<span class="v">12.95</span>"&gt; &lt;/<span class="i">leaflet-marker</span>&gt;
-
-	&lt;<span class="i">leaflet-polygon</span> <span class="a">color</span>="<span class="v">#f00</span>"&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.5700</span>" <span class="a">longitude</span>="<span class="v">12.9700</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6034</span>" <span class="a">longitude</span>="<span class="v">13.0001</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6006</span>" <span class="a">longitude</span>="<span class="v">12.9547</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;/<span class="i">leaflet-polygon</span>&gt;
-
-	&lt;<span class="i">leaflet-circle</span> <span class="a">latitude</span>="<span class="v">77.58</span>" <span class="a">longitude</span>="<span class="v">12.93</span>"
-	<span class="a">radius</span>="<span class="v">2000</span>" <span class="a">color</span>="<span class="v">#0a0</span>" <span class="a">fillColor</span>="<span class="v">#aa0</span>" <span class="a">fillOpacity</span>="<span class="v">0.5</span>" <span class="a">fill</span>="<span class="v">true</span>"
-	&lt;/<span class="i">leaflet-circle</span>&gt;
-
-	&lt;<span class="i">leaflet-polyline</span>&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6400</span>" <span class="a">longitude</span>="<span class="v">12.9100</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6229</span>" <span class="a">longitude</span>="<span class="v">12.9259</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6499</span>" <span class="a">longitude</span>="<span class="v">12.9699</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;<span class="i">leaflet-point</span> <span class="a">latitude</span>="<span class="v">77.6119</span>" <span class="a">longitude</span>="<span class="v">12.9738</span>"&gt; &lt;/<span class="i">leaflet-point</span>&gt;
-	&lt;/<span class="i">leaflet-polyline</span>&gt;
-
-	&lt;<span class="i">leaflet-circle</span> <span class="a">latitude</span>="<span class="v">77.64</span>" <span class="a">longitude</span>="<span class="v">12.93</span>"
-	<span class="a">radius</span>="<span class="v">500</span>" <span class="a">color</span>="<span class="v">#0a0</span>" <span class="a">fillColor</span>="<span class="v">#077</span>"&gt;
-	&lt;/<span class="i">leaflet-circle</span>&gt;
-	&lt;/<span class="i">leaflet-feature-group</span>&gt;
-	&lt;/<span class="i">leaflet-map</span>&gt;
 
 
 </code></pre>
@@ -572,34 +582,7 @@ In this example a new component is created which listens for location tracking i
 <a href="demo-advanced.html">Advanced demo of a custom component which uses data binding and geo location.</a>
 </div>
 
-<script>
-	var t = document.querySelector('#geojson-template');
 
-	t.data = {
-		"type": "FeatureCollection",
-		"features": [
-			{
-				"type": "Feature",
-				"properties": {
-					"popupContent": "18th & California Light Rail Stop"
-				},
-				"geometry": {
-					"type": "Point",
-					"coordinates": [-104.989, 39.746]
-				}
-			},{
-				"type": "Feature",
-				"properties": {
-					"popupContent": "20th & Welton Light Rail Stop"
-				},
-				"geometry": {
-					"type": "Point",
-					"coordinates": [-104.986, 39.747]
-				}
-			}
-		]
-	};
-</script>
 
 	</body>
 </html>
