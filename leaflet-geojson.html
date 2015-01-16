@@ -19,7 +19,7 @@ A GeoJson layer (<a href="http://leafletjs.com/reference.html#geojson">Leaflet R
 @homepage https://nhnb.github.io/leaflet-map/
 -->
 
-<polymer-element name="leaflet-geojson" extends="leaflet-feature-group" attributes="geojson">
+<polymer-element name="leaflet-geojson" extends="leaflet-feature-group" attributes="geojson pointToLayer">
 	<template>
 		<style>
 			:host { display: none; }
@@ -37,20 +37,33 @@ A GeoJson layer (<a href="http://leafletjs.com/reference.html#geojson">Leaflet R
 		 */
 		geojson: undefined,
 
+		/**
+		 * Function that will be used for creating layers for GeoJSON points (if not specified, simple markers will be created).
+		 *
+		 * @property pointToLayer
+		 * @type Function
+		 */
+		pointToLayer: undefined,
+
 		containerChanged: function() {
 			if (this.container) {
-				console.log('containerChanged, geojson:', this.geojson);
-				var feature = L.geoJson(this.geojson);
+				var feature = L.geoJson(this.geojson,{
+					pointToLayer: this.pointToLayer
+				});
 				this.feature = feature;
 				this.feature.addTo(this.container);
 				this.registerContainerOnChildren();
 			}
 		},
 
-		geojsonChanged: function() {
-			console.log('geojson changed');
+		/**
+		 * Reloads the geojson.
+		 *
+		 * @method reload
+		 */
+		reload: function() {
 			if (this.feature && this.geojson) {
-				console.log('adding geojson data');
+				this.feature.clearLayers();
 				this.feature.addData(this.geojson);
 			}
 		},

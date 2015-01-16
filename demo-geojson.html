@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>leaflet-map web-component demo</title>
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="leaflet-map.html">
+
+    <style>
+        leaflet-map {
+            width:500px;
+            height:500px;
+        }
+    </style>
+</head>
+<body>
+<h2>GeoJSON</h2>
+
+<p>Example of GeoJSON Layer</p>
+
+<template id="t" is="auto-binding">
+    <leaflet-map longitude="-104.989" latitude="39.746" zoom="13">
+        <leaflet-tilelayer
+                url="http://{s}.tiles.mapbox.com/v3/rbeers.j1mhej3b/{z}/{x}/{y}.png"
+                minZoom="2" maxZoom="6" noWrap>
+            Map source: <a href="http://www.mapbox.com/about/maps/">Terms &amp; Feedback</a>
+        </leaflet-tilelayer>
+        <leaflet-geojson id="geojsonLayer" geojson="{{data}}" pointToLayer="{{pointToLayer}}"></leaflet-geojson>
+    </leaflet-map>
+</template>
+
+<script>
+(function() {
+    var lat = -104.989;
+    var lng = 39.746;
+
+    var template = document.querySelector('#t');
+
+    template.data = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties":{
+                    "status":"standing"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [lat, lng]
+                }
+            }
+        ]
+    };
+
+    template.pointToLayer = function (feature, latlng) {
+        var smallIcon = L.icon({
+            iconSize: [24, 24],
+            iconAnchor: [15, 15],
+            popupAnchor:  [1, -24],
+            iconUrl: 'images/dog-' + feature.properties.status + '-24.png'
+        });
+
+        return L.marker(latlng, {icon: smallIcon});
+    };
+
+    template.tick = function() {
+        if (this.$ && this.$.geojsonLayer) {
+            lat += .001;
+            lng += .001;
+            this.data.features[0].geometry.coordinates = [lat,lng];
+            this.$.geojsonLayer.reload();
+
+        }
+
+        this.async(this.tick, null, 1000);
+    };
+
+
+    document.addEventListener('polymer-ready', function(e) {
+        template.tick();
+    });
+
+})();
+
+
+</script>
+
+</body>
+</html>
