@@ -553,7 +553,15 @@ add a marker with a popup text.
 			 * @attribute zoom
 			 * @type number
 			 */
-			zoom: {value: -1, reflect: true}
+			zoom: {value: -1, reflect: true},
+
+             /**
+              * The `bounds` attribute returns the  LatLngBounds of the map.
+              *
+              * @attribute bounds
+              * @type LatLngBounds
+              */
+             bounds: {value: null, reflect: true}
 		},
 
 		/**
@@ -820,11 +828,13 @@ add a marker with a popup text.
 			}
 
 			this.registerMapOnChildren();
+            this.updateBounds();
 		},
 
 		view: function(oldValue, newValue) {
 			if (this.map) {
 				this.map.setView(L.latLng(this.latitude, this.longitude), this.zoom);
+                this.updateBounds();
 			}
 		},
 
@@ -849,6 +859,10 @@ add a marker with a popup text.
 				}
 			}
 		},
+        updateBounds: function() {
+            var b = this.map.getBounds();
+            this.bounds = [[b.getWest(), b.getSouth()],[b.getEast(), b.getNorth()]];
+        },
 
 		/**
 		 * Returns a GeoJSON including all the features of the map
